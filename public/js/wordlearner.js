@@ -84,12 +84,12 @@ var learnDictionary = function () {
         $("#title").html(item.word);
     };
     render();
-    $("#prevBtn").removeAttr("disabled");
 
     $("#nextBtn").css("visibility", "visible");
     $("#prevBtn").css("visibility", "visible");
     setActiveButton("#learnBtn");
-
+    $("#nextBtn").unbind("click")
+    $("#prevBtn").unbind("click")
     $("#nextBtn").bind("click", function () {
         idx = (idx + 1) % dictionary.length;
         render();
@@ -102,45 +102,47 @@ var learnDictionary = function () {
 };
 
 function examineDictionary() {
-    var getContent = function (item) {
-        var puzzle = item.word;
+    var shuffledDictionary = shuffle(dictionary);
+    var idx = 0;
+    var render = function () {
+        var item = shuffledDictionary[idx];
 
+        var puzzleOptions = [];
         var content = "";
         content += '<div class="blurred" id="solution">';
         if (item.word.trim() != '') {
             content += '<div><b>Word:</b> ' + item.word + '</div>';
+            puzzleOptions.push(item.word);
         }
         if (item.phonetics.trim() != '') {
             content += '<div><b>Phonetics:</b> ' + item.phonetics + '</div>';
         }
         if (item.definition.trim() != '') {
             content += '<div><b>Definition:</b> ' + item.definition + '</div>';
+            puzzleOptions.push(item.definition);
         }
         if (item.example.trim() != '') {
             content += '<div><b>Example:</b> ' + item.example + '</div>';
         }
         if (item.translation.trim() != '') {
             content += '<div><b>Translation:</b> ' + item.translation + '</div>';
+            puzzleOptions.push(item.translation);
         }
         content += '    </div>';
         content += '    <div class="row text-center"><button type="button" onclick="$(\'#solution\').removeClass(\'blurred\');" class="btn btn-lg btn-success margin5">Verify</button></div>';
         content += '</div>';
-        return content;
-    };
-
-    var shuffledDictionary = shuffleDictionary();
-    var idx = 0;
-    var render = function () {
-        $("#body").html(getContent(shuffledDictionary[idx]));
+        $("#body").html(content);
+        var puzzle = puzzleOptions[rndInt(puzzleOptions.length)];
+        $("#title").html(puzzle);
     };
     render();
 
-    $("#prevBtn").attr("disabled", "disabled");
 
     $("#nextBtn").css("visibility", "visible");
     $("#prevBtn").css("visibility", "visible");
     setActiveButton("#examineBtn");
-
+    $("#nextBtn").unbind("click")
+    $("#prevBtn").unbind("click")
     $("#nextBtn").bind("click", function () {
         idx++;
         if (idx >= shuffledDictionary.length) {
@@ -150,23 +152,34 @@ function examineDictionary() {
         }
     });
     $("#prevBtn").bind("click", function () {
+        idx--;
+        if (idx < 0) {
+            idx = 0;
+        } else {
+            render();
+        }
     });
 }
 
-function shuffleDictionary() {
-    var shuffledDictionary = [];
-    _.each(dictionary, function (itm, idx) {
-        shuffledDictionary[idx] = itm;
+function rndInt(maxValue) {
+    return Math.round(Math.random() * 123786481243) % maxValue;
+}
+
+function shuffle(a) {
+    var shuffled = [];
+    _.each(a, function (itm, idx) {
+        shuffled[idx] = itm;
     });
-    var count = Math.random() % 100 + dictionary.length;
+
+    var count = rndInt(100) + dictionary.length;
     for (var i = 0; i < count; i++) {
-        var k = Math.random() % shuffledDictionary.length;
-        var l = Math.random() % shuffledDictionary.length;
-        var t = shuffledDictionary[k];
-        shuffledDictionary[k] = shuffledDictionary[l];
-        shuffledDictionary[l] = t;
+        var k = rndInt(shuffled.length);
+        var l = rndInt(shuffled.length);
+        var t = shuffled[k];
+        shuffled[k] = shuffled[l];
+        shuffled[l] = t;
     }
-    return shuffledDictionary;
+    return shuffled;
 }
 
 
