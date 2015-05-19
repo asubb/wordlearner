@@ -40,6 +40,7 @@ function startApp() {
 
 function setFile(id) {
     dictionaryFileId = id;
+
     readDictionary();
 }
 
@@ -194,10 +195,10 @@ function handleClientLoad() {
  * Check if the current user has authorized the application.
  */
 function checkAuth() {
-    gapi.auth.authorize(
-        {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': true},
-        handleAuthResult);
-//    handleAuthResult(null);
+//    gapi.auth.authorize(
+//        {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': true},
+//        handleAuthResult);
+    handleAuthResult(null);
 }
 
 /**
@@ -212,12 +213,11 @@ function handleAuthResult(authResult) {
         // Access token has been successfully retrieved, requests can be sent to the API.
         startApp();
     } else {
-        console.error(authResult);
         // No access token could be retrieved, show the button to start the authorization flow.
         authButton.style.display = 'block';
         authButton.onclick = function () {
             gapi.auth.authorize(
-                {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
+                {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false, 'authuser': -1},
                 handleAuthResult);
         };
     }
