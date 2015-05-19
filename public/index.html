@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Learn your words easily</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/wordlearner.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Easy words</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#learn" id="learnBtn">Learn</a></li>
+                <li><a href="#examine" id="examineBtn">Examine</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container" role="main">
+    <button type="button" id="authorizeButton" style="display: none" class="btn btn-lg btn-success">Authorize</button>
+    <div id="files">
+        <div class="page-header">Choose dictionary file</div>
+        <div class="body" class="list-group"></div>
+    </div>
+
+    <div id="content" style="display: none">
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                <button type="button" id="prevBtn" class="btn btn-lg btn-primary">&lt;&lt; Previous</button>
+            </div>
+            <div class="col-sm-4 text-center">
+                <div id="body"></div>
+            </div>
+            <div class="col-sm-4 text-center">
+                <button type="button" id="nextBtn" class="btn btn-lg btn-primary">Next &gt;&gt;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
