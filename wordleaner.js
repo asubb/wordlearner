@@ -28,10 +28,6 @@ app.get('/downloadAndParse', function (req, res) {
     })
 });
 
-// columns mapping
-var WORD_COLUMN = 0;
-var DEFINITION_COLUMN = 2;
-
 var parseDictionary = function (content) {
     var deferred = $.Deferred();
 
@@ -50,11 +46,14 @@ var parseDictionary = function (content) {
     parser.on('finish', function () {
         var out = [];
         _.each(output, function (itm, idx) {
-            var word = itm[WORD_COLUMN];
-            if (word != '') {
+            var word = itm[0];
+            if (word != '' && word != 'Word') {
                 out.push({
                     word: word,
-                    definition: itm[DEFINITION_COLUMN]
+                    phonetics: itm[1],
+                    definition: itm[2],
+                    example: itm[3],
+                    translation: itm[4]
                 });
             }
         });

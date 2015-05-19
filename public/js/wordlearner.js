@@ -63,23 +63,25 @@ var setActiveButton  = function(btn){
 };
 
 var learnDictionary = function () {
-    var getContent = function (item) {
-        var content = "";
-        content += '<div class="panel panel-info">';
-        content += '    <div class="panel-heading">';
-        content += '       <h3 class="panel-title">' + item.word + '</h3>';
-        content += '    </div>';
-        content += '    <div class="panel-body">';
-        content += '    ' + item.definition;
-        content += '    </div>';
-        content += '</div>';
-        return content;
-    };
-
     var idx = 0;
 
     var render = function() {
-        $("#body").html(getContent(dictionary[idx]));
+        var item = dictionary[idx];
+        var content = "";
+        if (item.phonetics.trim() != '') {
+            content += '<div><b>Phonetics:</b> ' + item.phonetics + '</div>';
+        }
+        if (item.definition.trim() != '') {
+            content += '<div><b>Definition:</b> ' + item.definition + '</div>';
+        }
+        if (item.example.trim() != '') {
+            content += '<div><b>Example:</b> ' + item.example + '</div>';
+        }
+        if (item.translation.trim() != '') {
+            content += '<div><b>Translation:</b> ' + item.translation + '</div>';
+        }
+        $("#body").html(content);
+        $("#title").html(item.word);
     };
     render();
     $("#prevBtn").removeAttr("disabled");
@@ -101,14 +103,27 @@ var learnDictionary = function () {
 
 function examineDictionary() {
     var getContent = function (item) {
+        var puzzle = item.word;
+
         var content = "";
-        content += '<div class="panel panel-info">';
-        content += '    <div class="panel-heading">';
-        content += '       <h3 class="panel-title">' + item.word + '</h3>';
+        content += '<div class="blurred" id="solution">';
+        if (item.word.trim() != '') {
+            content += '<div><b>Word:</b> ' + item.word + '</div>';
+        }
+        if (item.phonetics.trim() != '') {
+            content += '<div><b>Phonetics:</b> ' + item.phonetics + '</div>';
+        }
+        if (item.definition.trim() != '') {
+            content += '<div><b>Definition:</b> ' + item.definition + '</div>';
+        }
+        if (item.example.trim() != '') {
+            content += '<div><b>Example:</b> ' + item.example + '</div>';
+        }
+        if (item.translation.trim() != '') {
+            content += '<div><b>Translation:</b> ' + item.translation + '</div>';
+        }
         content += '    </div>';
-        content += '    <div class="panel-body">';
-        content += '    ' + item.definition;
-        content += '    </div>';
+        content += '    <div class="row text-center"><button type="button" onclick="$(\'#solution\').removeClass(\'blurred\');" class="btn btn-lg btn-success margin5">Verify</button></div>';
         content += '</div>';
         return content;
     };
@@ -156,7 +171,6 @@ function shuffleDictionary() {
 
 
 function downloadFile(url) {
-    console.log("url==", url);
     var q = $.Deferred();
     var accessToken = gapi.auth.getToken().access_token;
     var xhr = new XMLHttpRequest();

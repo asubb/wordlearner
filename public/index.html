@@ -5,6 +5,7 @@
     <title>Learn your words easily</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/wordleaner.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/underscore.js"></script>
@@ -31,7 +32,6 @@
                 <li><a href="#examine" id="examineBtn">Examine</a></li>
             </ul>
         </div>
-        <!--/.nav-collapse -->
     </div>
 </nav>
 
@@ -44,14 +44,25 @@
 
     <div id="content" style="display: none">
         <div class="row">
-            <div class="col-sm-4 text-center">
-                <button type="button" id="prevBtn" class="btn btn-lg btn-primary">&lt;&lt; Previous</button>
-            </div>
-            <div class="col-sm-4 text-center">
-                <div id="body"></div>
-            </div>
-            <div class="col-sm-4 text-center">
-                <button type="button" id="nextBtn" class="btn btn-lg btn-primary">Next &gt;&gt;</button>
+            <div class="text-center">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-3 text-left">
+                                <button type="button" id="prevBtn" class="btn btn-lg btn-primary">&lt;&lt;</button>
+                            </div>
+                            <div class="col-sm-6 text-center">
+                                <h3 class="panel-title"><span id="title"></span></h3>
+                            </div>
+                            <div class="col-sm-3 text-right">
+                                <button type="button" id="nextBtn" class="btn btn-lg btn-primary">&gt;&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body text-left">
+                        <span id="body"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
