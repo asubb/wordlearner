@@ -112,7 +112,6 @@ function examineDictionary() {
         content += '<div class="blurred" id="solution">';
         if (item.word.trim() != '') {
             content += '<div><b>Word:</b> ' + item.word + '</div>';
-            puzzleOptions.push(item.word);
         }
         if (item.phonetics.trim() != '') {
             content += '<div><b>Phonetics:</b> ' + item.phonetics + '</div>';
