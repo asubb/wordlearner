@@ -21,18 +21,34 @@ function startApp() {
         $(filesContainer).css("display", "block");
         $(mainContainer).css("display", "none");
         list().then(function (res) {
+            console.log(res);
             var files = $(filesContainer + " .body");
-            for (var i = 0; i < res.items.length; i++) {
-                var item = res.items[i]
+            var createItem = function (item, parent) {
                 var actor = $(document.createElement("a"));
                 actor.attr("href", "JavaScript:void(0)");
                 actor.attr("class", "list-group-item");
                 actor.bind("click", item.id, function (evt) {
                     setFile(evt.data);
                 });
-                actor.text(item.title);
+                if (parent) {
+                    actor.html(parent.title + " &gt; " + "<b>" + item.title + "</b>");
+                } else {
+                    actor.html(item.title);
+                }
 
                 files.append(actor);
+            };
+
+            for (var i = 0; i < res.items.length; i++) {
+                var item = res.items[i]
+                // retrieve 1st parent
+                if (item.parents[0]) {
+                    getFile(item.parents[0].id, item).then(function (parent, item) {
+                        createItem(item, parent);
+                    })
+                } else {
+                    createItem(item, null);
+                }
             }
         });
     }
@@ -197,9 +213,9 @@ function downloadFile(url) {
     return q;
 }
 
-function getFile(fileId) {
-    return driveCall("GET", "/files/" + fileId);
-}
+    function getFile(fileId, param) {
+        return driveCall("GET", "/files/" + fileId, param);
+    }
 
 function list() {
     return driveCall("GET", "/files?q=" + encodeURI("mimeType='application/vnd.google-apps.spreadsheet' and trashed=false"));
@@ -250,14 +266,14 @@ function handleAuthResult(authResult) {
 }
 
 
-function driveCall(method, path) {
+    function driveCall(method, path, param) {
     var q = $.Deferred();
     var accessToken = gapi.auth.getToken().access_token;
     var xhr = new XMLHttpRequest();
     xhr.open(method, "https://www.googleapis.com/drive/v2" + path);
     xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
     xhr.onload = function () {
-        q.resolve(JSON.parse(xhr.responseText));
+        q.resolve(JSON.parse(xhr.responseText), param);
     };
     xhr.onerror = function () {
         console.error(xhr);
