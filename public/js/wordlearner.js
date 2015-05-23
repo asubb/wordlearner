@@ -207,7 +207,7 @@ function downloadFile(url) {
         q.resolve(xhr.responseText);
     };
     xhr.onerror = function () {
-        console.error(xhr);
+        error("Download file: " + url, xhr);
     };
     xhr.send();
     return q;
@@ -266,7 +266,7 @@ function handleAuthResult(authResult) {
 }
 
 
-    function driveCall(method, path, param) {
+function driveCall(method, path, param) {
     var q = $.Deferred();
     var accessToken = gapi.auth.getToken().access_token;
     var xhr = new XMLHttpRequest();
@@ -276,8 +276,20 @@ function handleAuthResult(authResult) {
         q.resolve(JSON.parse(xhr.responseText), param);
     };
     xhr.onerror = function () {
-        console.error(xhr);
+        error("Drive call error", xhr);
     };
     xhr.send();
     return q;
+}
+
+function error(errMsg, errParam) {
+    if (console.error)
+        console.error("Error: " + errMsg, errParam);
+    noty({
+        text: "Something went wrong. Please try once more",
+        timeout: 2000,
+        theme: 'relax',
+        type: 'error',
+        layout: 'center'
+    });
 }
